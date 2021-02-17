@@ -3,11 +3,14 @@
 namespace Spectator\Tests;
 
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Sanctum;
 use Spectator\Middleware;
 use Spectator\Spectator;
 use Spectator\SpectatorServiceProvider;
+use Spectator\Tests\Models\TestUser;
 
 class ResponseValidatorTest extends TestCase
 {
@@ -272,5 +275,27 @@ class ResponseValidatorTest extends TestCase
             ->assertInvalidRequest()
             ->assertInvalidResponse()
             ->assertValidationMessage('The spec file is invalid. Please lint it using spectral (https://github.com/stoplightio/spectral) before trying again.');
+    }
+
+    public function test_request_with_sanctum()
+    {
+        Sanctum::actingAs(
+            new TestUser([
+                'id' => 1,
+                'name' => 'Jim',
+                'email' => 'test@test.test',
+            ]),
+            ['*']
+        );
+
+        Route::get('/users', function () {
+            return [
+                Auth::user()->only(['id', 'name', 'email']),
+            ];
+        })->middleware([Middleware::class, 'auth:sanctum']);
+
+        $this->getJson('/users')
+            ->assertValidRequest()
+            ->assertValidResponse(200);
     }
 }

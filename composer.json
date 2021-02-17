@@ -20,6 +20,7 @@
     "ext-json": "*",
     "cebe/php-openapi": "^1.4",
     "laravel/framework": "^7.30.3|^8.24.0",
+    "laravel/sanctum": "^2.9",
     "opis/json-schema": "^1.0"
   },
   "require-dev": {
@@ -42,6 +43,9 @@
   },
   "extra": {
     "laravel": {
+      "dont-discover": [
+        "laravel/sanctum"
+      ],
       "providers": [
         "Spectator\\SpectatorServiceProvider"
       ]

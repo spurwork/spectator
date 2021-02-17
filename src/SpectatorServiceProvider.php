@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\TestResponse as LegacyTestResponse;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Testing\TestResponse;
+use Laravel\Sanctum\Sanctum;
+use Laravel\Sanctum\SanctumServiceProvider;
 use LogicException;
 
 class SpectatorServiceProvider extends ServiceProvider
@@ -17,6 +19,10 @@ class SpectatorServiceProvider extends ServiceProvider
             $this->publishConfig();
             $this->registerMiddleware();
             $this->decorateTestResponse();
+
+            if (App::runningUnitTests()) {
+                $this->registerProviders();
+            }
         }
     }
 
@@ -68,5 +74,12 @@ class SpectatorServiceProvider extends ServiceProvider
         $configPath = __DIR__.'/../config/spectator.php';
 
         $this->publishes([$configPath => $this->getConfigPath()], 'config');
+    }
+
+    protected function registerProviders()
+    {
+        $this->app->register(SanctumServiceProvider::class);
+
+        Sanctum::ignoreMigrations();
     }
 }
