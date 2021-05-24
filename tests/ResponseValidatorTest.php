@@ -146,17 +146,20 @@ class ResponseValidatorTest extends TestCase
 
             if ($state === self::NULLABLE_EMPTY_STRING) {
                 $return['email'] = '';
+                $return['website'] = '';
                 $return['settings']['last_updated_at'] = '';
                 $return['settings']['notifications']['email'] = '';
                 $return['posts'][0]['body'] = '';
             }
 
             if ($state === self::NULLABLE_VALID) {
+                $return['website'] = 'https://example.org';
                 $return['email'] = 'test@test.com';
             }
 
             if ($state === self::NULLABLE_INVALID) {
                 $return['email'] = [1, 2, 3];
+                $return['website'] = [1, 2, 3];
                 $return['settings']['last_updated_at'] = [1, 2, 3];
                 $return['settings']['notifications']['email'] = [1, 2, 3];
                 $return['posts'][0]['body'] = [1, 2, 3];
@@ -164,6 +167,7 @@ class ResponseValidatorTest extends TestCase
 
             if ($state === self::NULLABLE_NULL) {
                 $return['email'] = null;
+                $return['website'] = null;
                 $return['settings']['last_updated_at'] = null;
                 $return['settings']['notifications']['email'] = null;
                 $return['posts'][0]['body'] = null;

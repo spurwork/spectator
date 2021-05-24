@@ -45,6 +45,12 @@
                       "example": "test@test.com",
                       "nullable": true
                     },
+                    "website": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "https://example.org",
+                      "nullable": true
+                    },
                     "settings": {
                       "type": "object",
                       "properties": {

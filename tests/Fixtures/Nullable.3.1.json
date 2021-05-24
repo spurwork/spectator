@@ -44,6 +44,11 @@
                       "type": ["string", "null"],
                       "example": "test@test.com"
                     },
+                    "website": {
+                      "type": ["string", "null"],
+                      "format": "uri",
+                      "example": "https://example.org"
+                    },
                     "settings": {
                       "type": "object",
                       "properties": {
